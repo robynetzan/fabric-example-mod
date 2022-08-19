@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
-  "id": "modid",
+  "id": "worldcommand",
   "version": "${version}",
 
-  "name": "Example Mod",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "name": "Fabric World Command",
+  "description": "Simple /world command to switch world on Fabric servers",
   "authors": [
-    "Me!"
+    "robynetzan"
   ],
   "contact": {
     "homepage": "https://fabricmc.net/",
@@ -19,7 +19,7 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.fabricmc.example.ExampleMod"
+      "cool.rtz.fabricworld.FabricWorld"
     ]
   },
   "mixins": [
