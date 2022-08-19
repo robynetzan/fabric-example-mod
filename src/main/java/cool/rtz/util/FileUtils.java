@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -46,9 +48,13 @@ public class FileUtils<T> {
         try {
             OutputStreamWriter writer = getWriter(filename);
             writeJson(writer, data);
+			writer.flush();
             writer.close();
         } catch (Exception e) {
-            FabricWorld.LOGGER.error(e.toString());
+			StringWriter sw = new StringWriter();
+			PrintWriter pw = new PrintWriter(sw);
+			e.printStackTrace(pw);
+            FabricWorld.LOGGER.error(sw.toString());
         }
     }
 }

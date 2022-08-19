@@ -38,7 +38,7 @@ public class WorldCommand {
         // Move player
         player.moveToWorld(dimension);
         
-        // Load previous location from this world to .dat
+        // Load previous location in this world from .json
 
         // Teleport to that location
         // player.setPosition(vec3d);
