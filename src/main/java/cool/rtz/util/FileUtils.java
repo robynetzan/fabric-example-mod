@@ -1,25 +1,54 @@
 package cool.rtz.util;
 
 import java.io.File;
-import java.io.PrintWriter;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
 
-public class FileUtils {
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
-    private static String serverPath = System.getProperty("user.dir");
-	private static final String dirpath = serverPath + File.separator + "config" + File.separator + "worldcommand";
+import cool.rtz.fabricworld.FabricWorld;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.WorldSavePath;
 
-    public static boolean writeJsonToFile(String jsonString, String fileName) {
+public class FileUtils<T> {
 
-        File dir = new File(dirpath);
-		dir.mkdirs();
-        
+	final MinecraftServer server;
+
+	public FileUtils (MinecraftServer server) {
+		this.server = server;
+	}
+	
+	private static final Gson GSON = new GsonBuilder()
+            .setPrettyPrinting()
+            .serializeNulls()
+            .disableHtmlEscaping()
+            .create();
+
+	private void writeJson(OutputStreamWriter writer, T data) {
+        GSON.toJson(data, writer);
+    }
+
+	private File getFile(String filename) {
+        return server.getSavePath(WorldSavePath.ROOT)
+                .resolve("data")
+                .resolve(filename + ".json")
+                .toFile();
+    }
+
+	private OutputStreamWriter getWriter(String filename) throws FileNotFoundException {
+        return new OutputStreamWriter(new FileOutputStream(this.getFile(filename)));
+    }
+
+	public void write(String filename, T data) {
+        FabricWorld.LOGGER.trace("writing");
         try {
-			PrintWriter writer = new PrintWriter(dirpath + File.separator + fileName + ".json", "UTF-8");
-			writer.println(jsonString);
-			writer.close();
-		} catch (Exception e) {
-			return false;
-		}
-		return true;
+            OutputStreamWriter writer = getWriter(filename);
+            writeJson(writer, data);
+            writer.close();
+        } catch (Exception e) {
+            FabricWorld.LOGGER.error(e.toString());
+        }
     }
 }

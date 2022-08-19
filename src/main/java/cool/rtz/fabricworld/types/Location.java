@@ -33,12 +33,4 @@ public class Location {
         tag.putDouble("z", position.z);
         return tag;
     }
-
-    public String toJson() {
-        GsonBuilder builder = new GsonBuilder();
-        builder.setPrettyPrinting(); 
-        Gson gson = builder.create(); 
-        String jsonString = gson.toJson(this);
-        return jsonString;
-    }
 }
